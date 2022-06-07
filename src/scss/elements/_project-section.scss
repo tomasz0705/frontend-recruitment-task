@@ -1,0 +1,66 @@
+.project {
+    width: 100%;
+    height: 100%;
+    margin: 96px 0px;
+    position: relative;
+
+    display: flex;
+    min-height: 500px;
+
+    &__container {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    &__image {
+        width: 100%;
+        height: 100%;
+
+        .image {
+            width: 100%;
+            height: 100%;
+            background-image: url('../../../images/sean-o-KMn4VEeEPR8-unsplash_1_s6zmfh_c_scale\,w_784.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+
+    &__description {
+        width: 100%;
+        padding: 16px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+
+        .title {
+            font-weight: 700;
+            font-size: 28px;
+            line-height: 1.2;
+            padding-right: 16px;
+        }
+
+        .info {
+            font-weight: 300;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-top: 24px;
+            padding-right: 16px;
+        }
+
+        .primaryButton {
+            margin-top: 32px;
+            font-family: $font-roboto;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 32px;
+            border: none;
+            padding: 16px 40px;
+            background-color: $primary-color;
+            color: $white-color;
+        }
+    }
+}
