@@ -1,54 +1,41 @@
-const { src, dest, watch, series, parallel } = require('gulp');
+const entryPath = "src";
+const entryPathHTML = ".";
 
-const sourcemaps = require('gulp-sourcemaps');
-const sass = require('gulp-sass');
-const concat = require('gulp-concat');
-const uglify = require('gulp-uglify');
-const postcss = require('gulp-postcss');
-const autoprefixer = require('autoprefixer');
-const cssnano = require('cssnano');
-var replace = require('gulp-replace');
+const gulp = require("gulp");
+const sass = require("gulp-sass");
+sass.compiler = require('sass');
+const sourcemaps = require("gulp-sourcemaps");
+const autoprefixer = require("gulp-autoprefixer");
+const browserSync = require("browser-sync").create();
 
-// File paths
-const files = { 
-    scssPath: 'src/scss/**/*.scss',
-    jsPath: 'src/js/**/*.js'
-};
+function compileSass(done) {
+  gulp
+    .src(entryPath + "/scss/main.scss")
+    .pipe(sourcemaps.init())
+    .pipe(sass({outputStyle: "expanded"}).on("error", sass.logError))
+    .pipe(autoprefixer())
+    .pipe(sourcemaps.write("."))
+    .pipe(gulp.dest(entryPath + "/css"));
 
-function scssTask(){    
-    return src(files.scssPath)
-        .pipe(sourcemaps.init()) // initialize sourcemaps first
-        .pipe(sass([])) // compile SCSS to CSS
-        .pipe(postcss([ autoprefixer(), cssnano() ])) // PostCSS plugins
-        .pipe(sourcemaps.write('.')) // write sourcemaps file in current directory
-        .pipe(dest('dist')
-    ); // put final CSS in dist folder
+  done();
 }
 
-function jsTask(){
-    return src([
-        files.jsPath
-        ])
-        .pipe(concat('all.js'))
-        .pipe(uglify())
-        .pipe(dest('dist')
-    );
+function watcher(done) {
+  browserSync.init({
+    server: "./" + entryPathHTML
+  });
+
+  gulp.watch(entryPath + "/scss/**/*.scss", gulp.series(compileSass, reload));
+  gulp.watch(entryPathHTML + "/*.html", gulp.series(reload));
+  gulp.watch(entryPath + "/js/*.js", gulp.series(reload));
+
+  done();
 }
 
-var cbString = new Date().getTime();
-function cacheBustTask(){
-    return src(['index.html'])
-        .pipe(replace(/cb=\d+/g, 'cb=' + cbString))
-        .pipe(dest('.'));
+function reload(done) {
+  browserSync.reload();
+  done();
 }
 
-function watchTask(){
-    watch([files.scssPath, files.jsPath], 
-        parallel(scssTask, jsTask));    
-}
-
-exports.default = series(
-    parallel(scssTask, jsTask), 
-    cacheBustTask,
-    watchTask
-);
+exports.sass = gulp.parallel(compileSass);
+exports.default = gulp.parallel(compileSass, watcher);
