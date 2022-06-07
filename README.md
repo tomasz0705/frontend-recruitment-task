@@ -1,5 +1,25 @@
 # Zadanie rekrutacyjne GravityGlobal na frontend developera
 
+
+## Instalacja
+Aby odpalić paczkę z repozytorium:
+- Sklonuj repozytorium
+- Użyj npm aby zainstalować niezbędne rzeczy:
+
+```bash
+npm install
+```
+
+## Start
+W terminalu wpisz:
+
+```bash
+gulp
+```
+lub
+```bash
+npm start
+```
 ## Informacje wstępne
 Zadanie jest przeznaczone na każdy poziom umiejętności developera, dzieli się na poszczególne zadania,
 które są stopniowo coraz trudniejsze. Każdy powinien zrobić test na tyle ile aktualnie potrafi, gdyż
